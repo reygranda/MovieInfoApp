@@ -4,8 +4,7 @@ const axios = require('axios');
 
 function App() {
   const [searchValue, setSearchValue] = useState('');
-
-  const movieTitles = options.params.s;
+  const [movieList, setMovieList] = useState([]);
 
   const options = {
     method: 'GET',
@@ -20,8 +19,10 @@ function App() {
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
+        setMovieList(response.data.Search);
+        console.log(movieList);
       })
+
       .catch(function (error) {
         console.error(error);
       });
@@ -42,7 +43,7 @@ function App() {
             />
             <button
               type="submit"
-              onSubmit={penelope}
+              onClick={penelope}
               class=" bg-blue-500 rounded-lg ml-2"
             >
               Done
@@ -51,11 +52,20 @@ function App() {
         </div>
 
         <div class="flex flex-col bg-slate 700 md:w-1/2">
-          <div class="">
+          <div>
             <h1 class="text-4xl text-center text-white">Results</h1>
           </div>
-          <div class="">
-            <h1>{}</h1>
+          <div>
+            {movieList.map((item) => {
+              return (
+                <div class="flex flex-row overflow-y-auto">
+                  <img class="w-1/12" src={item.Poster} alt={item.Type}></img>
+                  <h1 class="text-2xl text-center text-white font-bold">
+                    {item.Title}
+                  </h1>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
